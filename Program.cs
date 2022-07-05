@@ -26,3 +26,5 @@ for (int i = 1; i < fileLines.Length; i++)
 Console.WriteLine();
 
 Address.PrintTable(header, addresses);
+
+Address.SaveAsJSON(addresses);

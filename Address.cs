@@ -62,7 +62,7 @@ namespace ListaIndirizzi
 
             string separator = "\n";
             for (int i = 0; i < cellsWidth.Length; i++)
-                separator += "-" + new string('-', cellsWidth[i]) + "-\t";
+                separator += "-" + new string('-', cellsWidth[i]) + "\t";
 
             Console.WriteLine(separator);
 
@@ -74,6 +74,31 @@ namespace ListaIndirizzi
                 }
                 Console.WriteLine(address.PaddedZIP());
             }
+        }
+
+        public static void SaveAsJSON(List<Address> addresses)
+        {
+            string json = "[";
+            foreach (Address address in addresses)
+            {
+                json += "{";
+                foreach (var property in address.GetType().GetProperties())
+                {
+                    if (property.Name == "ZIP")
+                        json += string.Format("\"{0}\":\"{1}\"", property.Name, address.PaddedZIP());
+                    else
+                        json += "\"" + property.Name + "\":\"" + property.GetValue(address).ToString().Replace("\"", "'") + "\",";
+                }
+                json += "},";
+            }
+            json = json.Substring(0, json.Length - 1);
+            json += "]";
+
+            FileStream fs = new FileStream("../../../addresses.json", FileMode.Create);
+            StreamWriter sw = new StreamWriter(fs);
+            sw.Write(json);
+            sw.Close();
+            fs.Close();
         }
     }
 }
