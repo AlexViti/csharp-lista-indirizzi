@@ -11,19 +11,34 @@ while (!reader.EndOfStream)
 {
     string line = reader.ReadLine();
     string[] values = line.Split(',');
-    string name = values[0];
-    string surname = values[1];
-    string street = values[2];
-    string city = values[3];
-    string province = values[4];
-    string zipString = values[5];
-    int zip = int.Parse(zipString);
-    addresses.Add(new Address(name, surname, street, city, province, zip));
+    if (values.Length == header.Split(",").Length)
+    {
+        addresses.Add(new Address(values[0].Trim(), values[1].Trim(), values[2].Trim(), values[3].Trim(), values[4].Trim(), int.Parse(values[5])));
+    }
 }
 
 reader.Close();
 
+int[] cellsWidth = new int[header.Split(",").Length];
 foreach (Address address in addresses)
 {
-    address.Print();
+    for (int i = 0; i < cellsWidth.Length; i++)
+    {
+        if (cellsWidth[i] < address.GetType().GetProperty(header.Split(",")[i]).GetValue(address).ToString().Length)
+        {
+            cellsWidth[i] = address.GetType().GetProperty(header.Split(",")[i]).GetValue(address).ToString().Length;
+        }
+    }
+}
+foreach (Address address in addresses)
+{
+    for (int i = 0; i < cellsWidth.Length; i++)
+    {
+        Console.Write(address.GetType().GetProperty(header.Split(",")[i]).GetValue(address).ToString().PadRight(cellsWidth[i]));
+        if (i < cellsWidth.Length - 1)
+        {
+            Console.Write("\t");
+        }
+    }
+    Console.WriteLine();
 }
