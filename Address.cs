@@ -36,7 +36,7 @@ namespace ListaIndirizzi
             Console.WriteLine("{0} {1} {2} {3} {4} {5}", Name, Surname, Street, City, Province, PaddedZIP());
         }
 
-        public static void Print(string[] header, List<Address> addresses)
+        public static void PrintTable(string[] header, List<Address> addresses)
         {
             int[] cellsWidth = new int[header.Length];
             foreach (Address address in addresses)
@@ -68,14 +68,11 @@ namespace ListaIndirizzi
 
             foreach (Address address in addresses)
             {
-                for (int i = 0; i < cellsWidth.Length; i++)
+                for (int i = 0; i < cellsWidth.Length - 1; i++)
                 {
-                    Console.Write(address.GetType().GetProperty(header[i]).GetValue(address).ToString().PadRight(cellsWidth[i]));
-
-                    if (i < cellsWidth.Length - 1)
-                        Console.Write("\t");
+                    Console.Write(address.GetType().GetProperty(header[i]).GetValue(address).ToString().PadRight(cellsWidth[i]) + "\t");
                 }
-                Console.WriteLine();
+                Console.WriteLine(address.PaddedZIP());
             }
         }
     }

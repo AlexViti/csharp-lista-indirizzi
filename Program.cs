@@ -25,4 +25,4 @@ for (int i = 1; i < fileLines.Length; i++)
 
 Console.WriteLine();
 
-Address.Print(header, addresses);
+Address.PrintTable(header, addresses);
