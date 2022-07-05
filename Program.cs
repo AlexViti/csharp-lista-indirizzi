@@ -1,22 +1,28 @@
 ﻿using ListaIndirizzi;
 
-
-StreamReader reader = new StreamReader("../../../addresses.csv");
+string[] fileLines = File.ReadAllLines("../../../addresses.csv");
 
 List<Address> addresses = new List<Address>();
 
-string header = reader.ReadLine();
+string[] header = fileLines[0].Split(',');
 
-while (!reader.EndOfStream)
+for (int i = 1; i < fileLines.Length; i++)
 {
-    string line = reader.ReadLine();
-    string[] values = line.Split(',');
-    if (values.Length == header.Split(",").Length)
+    string[] values = fileLines[i].Split(',');
+    
+    try
     {
-        addresses.Add(new Address(values[0].Trim(), values[1].Trim(), values[2].Trim(), values[3].Trim(), values[4].Trim(), int.Parse(values[5])));
+        if (values.Length == header.Length)
+            addresses.Add(new Address(values[0].Trim(), values[1].Trim(), values[2].Trim(), values[3].Trim(), values[4].Trim(), int.Parse(values[5])));
+        else
+            throw new Exception($"Invalid line ({i}): {fileLines[i]}");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex.Message);
     }
 }
 
-reader.Close();
+Console.WriteLine();
 
-Address.Print(header.Split(","), addresses);
+Address.Print(header, addresses);
