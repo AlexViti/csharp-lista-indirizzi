@@ -19,26 +19,4 @@ while (!reader.EndOfStream)
 
 reader.Close();
 
-int[] cellsWidth = new int[header.Split(",").Length];
-foreach (Address address in addresses)
-{
-    for (int i = 0; i < cellsWidth.Length; i++)
-    {
-        if (cellsWidth[i] < address.GetType().GetProperty(header.Split(",")[i]).GetValue(address).ToString().Length)
-        {
-            cellsWidth[i] = address.GetType().GetProperty(header.Split(",")[i]).GetValue(address).ToString().Length;
-        }
-    }
-}
-foreach (Address address in addresses)
-{
-    for (int i = 0; i < cellsWidth.Length; i++)
-    {
-        Console.Write(address.GetType().GetProperty(header.Split(",")[i]).GetValue(address).ToString().PadRight(cellsWidth[i]));
-        if (i < cellsWidth.Length - 1)
-        {
-            Console.Write("\t");
-        }
-    }
-    Console.WriteLine();
-}
+Address.Print(header.Split(","), addresses);
