@@ -94,11 +94,15 @@ namespace ListaIndirizzi
             json = json.Substring(0, json.Length - 1);
             json += "]";
 
-            FileStream fs = new FileStream("../../../addresses.json", FileMode.Create);
-            StreamWriter sw = new StreamWriter(fs);
+            StreamWriter sw = File.CreateText("../../../addresses.json");
             sw.Write(json);
             sw.Close();
-            fs.Close();
         }
+
+        public static void SaveAsJason(Address[] addresses)
+        {
+            Address.SaveAsJSON(new List<Address>(addresses));
+        }
+            
     }
 }
