@@ -30,5 +30,10 @@ namespace ListaIndirizzi
         {
             return ZIP.ToString().PadLeft(5, '0');
         }
+
+        public void Print()
+        {
+            Console.WriteLine("{0} {1} {2} {3} {4} {5}", Name, Surname, Street, City, Province, PaddedZIP());
+        }
     }
 }
